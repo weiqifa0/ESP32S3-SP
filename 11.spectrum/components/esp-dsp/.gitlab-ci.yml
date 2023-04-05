@@ -1,0 +1,143 @@
+stages:
+  - build
+  - deploy
+
+image: "$CI_DOCKER_REGISTRY/esp-idf-doc-env-v5.0:2-3"
+
+variables:
+  # System environment
+
+  # Common parameters for the 'make' during CI tests
+  MAKEFLAGS: "-j5 --no-keep-going"
+
+  # GitLab-CI environment
+  GET_SOURCES_ATTEMPTS: "10"
+  ARTIFACT_DOWNLOAD_ATTEMPTS: "10"
+  GIT_SUBMODULE_STRATEGY: none
+
+  ESP_IDF_GIT: "https://gitlab-ci-token:${CI_JOB_TOKEN}@${GITLAB_HTTPS_SERVER}/espressif/esp-idf.git"
+
+.setup_idf_tools: &setup_idf_tools |
+  tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
+
+.add_gh_key_remote: &add_gh_key_remote |
+  command -v ssh-agent >/dev/null || exit 1
+  eval $(ssh-agent -s)
+  printf '%s\n' "${GH_PUSH_KEY}" | tr -d '\r' | ssh-add - > /dev/null
+  mkdir -p ~/.ssh && chmod 700 ~/.ssh
+  [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config || ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+  git remote remove github || true
+  git remote add github ${GH_PUSH_REPO}
+
+after_script:
+  # Just for cleaning space, no other causes
+  - git clean -ffdx
+
+# This template gets expanded multiple times, once for every IDF version.
+# IDF version is specified by setting the espressif/idf image tag.
+#
+# EXAMPLE_TARGETS sets the list of IDF_TARGET values to build examples for.
+# It should be equal to the list of targets supported by the specific IDF version.
+#
+# TEST_TARGETS sets the list of IDF_TARGET values to build the test_app for.
+# It should contain only the targets with optimized assembly implementations.
+#
+.build_template:
+  stage: build
+  tags:
+    - build
+    - internet
+  script:
+    - ./build_all.sh
+  variables:
+    EXAMPLE_TARGETS: "esp32"
+    TEST_TARGETS: "esp32"
+
+build_idf_v4.2:
+  extends: .build_template
+  image: espressif/idf:release-v4.2
+  variables:
+    EXAMPLE_TARGETS: "esp32 esp32s2"
+
+build_idf_v4.3:
+  extends: .build_template
+  image: espressif/idf:release-v4.3
+  variables:
+    EXAMPLE_TARGETS: "esp32 esp32s2 esp32c3"
+
+build_idf_v4.4:
+  extends: .build_template
+  image: espressif/idf:release-v4.4
+  variables:
+    EXAMPLE_TARGETS: "esp32 esp32s2 esp32c3 esp32s3"
+    TEST_TARGETS: "esp32 esp32s3"
+
+build_idf_v5.0:
+  extends: .build_template
+  image: espressif/idf:release-v5.0
+  variables:
+    EXAMPLE_TARGETS: "esp32 esp32s2 esp32s3 esp32c3 esp32c2"
+    TEST_TARGETS: "esp32 esp32s3"
+    # GNU Make based build system is not supported starting from IDF v5.0
+    SKIP_GNU_MAKE_BUILD: 1
+
+build_idf_latest:
+  extends: .build_template
+  image: espressif/idf:latest
+  variables:
+    EXAMPLE_TARGETS: "esp32 esp32s2 esp32s3 esp32c3"
+    TEST_TARGETS: "esp32 esp32s3"
+    # GNU Make based build system is not supported starting from IDF v5.0
+    SKIP_GNU_MAKE_BUILD: 1
+
+build_docs:
+  stage: build
+  tags:
+    - build_docs
+  artifacts:
+    when: always
+    paths:
+      - docs/doxygen-warning-log.txt
+      - docs/sphinx-warning-log.txt
+      - docs/_build/html
+    expire_in: 1 day
+  # No cleaning when the artifacts
+  after_script: []
+  script:
+    - source /opt/pyenv/activate
+    - pyenv global $(pyenv versions --bare)
+    - cd docs
+    # - python -m pip install -U -r requirements.txt
+    - pip install -U -r requirements.txt
+    - python build_bm_table.py -d esp_bm_results.csv -t esp-dsp-benchmarks_template.rst -o esp-dsp-benchmarks.rst
+    - git diff --exit-code esp-dsp-benchmarks.rst
+    # Not build docs for a while
+    # - make html
+    - ./check_doc_warnings.sh
+   
+push_master_to_github:
+  stage: deploy
+  tags:
+    - deploy
+  only:
+    - master
+    - /^release\/v/
+    - /^v\d+\.\d+(\.\d+)?($|-)/
+  when: on_success
+  script:
+    - git clone --depth 1 ${ESP_IDF_GIT} esp-idf
+    - *add_gh_key_remote
+    - esp-idf/tools/ci/push_to_github.sh
+
+upload_to_component_manager:
+  image: espressif/idf:latest
+  stage: deploy
+  tags:
+    - deploy
+  only:
+    - master
+    - /^release\/v/
+    - /^v\d+\.\d+(\.\d+)?($|-)/
+  when: on_success
+  script:
+    - python -m idf_component_manager upload-component --allow-existing --name=esp-dsp --namespace=espressif
