@@ -86,7 +86,7 @@ void st7789_init(void)
     };
 
     //Initialize non-SPI GPIOs
-    gpio_pad_select_gpio(ST7789_DC);
+    esp_rom_gpio_pad_select_gpio(ST7789_DC);
     gpio_set_direction(ST7789_DC, GPIO_MODE_OUTPUT);
 
 #if !defined(ST7789_SOFT_RST)
@@ -95,7 +95,7 @@ void st7789_init(void)
 #endif
 
 #if ST7789_ENABLE_BACKLIGHT_CONTROL
-    gpio_pad_select_gpio(ST7789_BCKL);
+    esp_rom_gpio_pad_select_gpio(ST7789_BCKL);
     gpio_set_direction(ST7789_BCKL, GPIO_MODE_OUTPUT);
 #endif
 
@@ -117,7 +117,7 @@ void st7789_init(void)
         st7789_send_cmd(st7789_init_cmds[cmd].cmd);
         st7789_send_data(st7789_init_cmds[cmd].data, st7789_init_cmds[cmd].databytes&0x1F);
         if (st7789_init_cmds[cmd].databytes & 0x80) {
-                vTaskDelay(100 / portTICK_RATE_MS);
+                vTaskDelay(100 / portTICK_PERIOD_MS);
         }
         cmd++;
     }

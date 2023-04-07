@@ -23,6 +23,7 @@
 #include "app_main.h"
 #include "page_fft.h"
 #include "esp_log.h"
+#include "esp_timer.h"
 
 #define TAG "ESP32S3"
 /*用定时器给LVGL提供时钟*/
