@@ -1,7 +1,12 @@
 # ESP32S3-SP
 
 环境安装参考这个链接
+
 https://mp.weixin.qq.com/s/TbulWs86TWMFHB3vj_xS_A
+
+# 分支介绍
+* master分支的例程需要esp-idf 4.4的环境
+* 下载后直接运行idf.py build就可以，不需要在set-target 这样会导致会覆盖默认配置
 
 # ESP32S3-uac 音频
 
