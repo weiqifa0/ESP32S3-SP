@@ -10,7 +10,15 @@ https://mp.weixin.qq.com/s/TbulWs86TWMFHB3vj_xS_A
 
 # ESP32S3-uac 音频
 
+## 设备做HOST的部分
+
 https://docs.espressif.com/projects/espressif-esp-iot-solution/zh_CN/latest/usb/usb_stream.html
+
+## 设备做device heasdset
+
+* 下面的工程需要esp-idf 5.0.1的环境
+
+https://github.com/espressif/esp-box/tree/master/examples/usb_headset
 
 
 # 常见的指令
