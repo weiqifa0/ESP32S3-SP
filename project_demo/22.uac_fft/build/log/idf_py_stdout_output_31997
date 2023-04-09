@@ -1,0 +1,55 @@
+[1/5] cd /Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/build/esp-idf/esptool_py && /Users/crisqifawei/.espressif/python_env/idf5.0_py3.9_env/bin/python /Users/crisqifawei/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/build/partition_table/partition-table.bin /Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/build/hello-world.bin
+hello-world.bin binary size 0x748e0 bytes. Smallest app partition is 0x55f000 bytes. 0x4ea720 bytes (92%) free.
+[2/5] Performing build step for 'bootloader'
+[1/1] cd /Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/build/bootloader/esp-idf/esptool_py && /Users/crisqifawei/.espressif/python_env/idf5.0_py3.9_env/bin/python /Users/crisqifawei/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x0 /Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/build/bootloader/bootloader.bin
+Bootloader binary size 0x5d10 bytes. 0x22f0 bytes (27%) free.
+[3/5] No install step for 'bootloader'
+[4/5] Completed 'bootloader'
+[4/5] cd /Users/crisqifawei/esp/esp-idf/components/esptool_py && /opt/homebrew/Cellar/cmake/3.26.1/bin/cmake -D IDF_PATH=/Users/crisqifawei/esp/esp-idf -D "SERIAL_TOOL=/Users/crisqifawei/.espressif/python_env/idf5.0_py3.9_env/bin/python;;/Users/crisqifawei/esp/esp-idf/components/esptool_py/esptool/esptool.py;--chip;esp32s3" -D "SERIAL_TOOL_ARGS=--before=default_reset;--after=hard_reset;write_flash;@flash_args" -D WORKING_DIRECTORY=/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/build -P /Users/crisqifawei/esp/esp-idf/components/esptool_py/run_serial_tool.cmake
+esptool esp32s3 -p /dev/cu.usbserial-56230119491 -b 460800 --before=default_reset --after=hard_reset write_flash --flash_mode dio --flash_freq 80m --flash_size 8MB 0x0 bootloader/bootloader.bin 0x10000 hello-world.bin 0x8000 partition_table/partition-table.bin
+esptool.py v4.5.1
+Serial port /dev/cu.usbserial-56230119491
+Connecting....
+Chip is ESP32-S3 (revision v0.1)
+Features: WiFi, BLE
+Crystal is 40MHz
+MAC: 34:85:18:97:1f:08
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Flash will be erased from 0x00000000 to 0x00005fff...
+Flash will be erased from 0x00010000 to 0x00084fff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+Compressed 23824 bytes to 15129...
+Writing at 0x00000000... (100 %)
+Wrote 23824 bytes (15129 compressed) at 0x00000000 in 0.7 seconds (effective 277.2 kbit/s)...
+Hash of data verified.
+Compressed 477408 bytes to 256455...
+Writing at 0x00010000... (6 %)
+Writing at 0x0001ccc6... (12 %)
+Writing at 0x00026077... (18 %)
+Writing at 0x0002f6f0... (25 %)
+Writing at 0x00038c5f... (31 %)
+Writing at 0x0003e564... (37 %)
+Writing at 0x000441b5... (43 %)
+Writing at 0x0004a322... (50 %)
+Writing at 0x0005012a... (56 %)
+Writing at 0x00055f20... (62 %)
+Writing at 0x0005d807... (68 %)
+Writing at 0x0006334d... (75 %)
+Writing at 0x00069739... (81 %)
+Writing at 0x0006f33d... (87 %)
+Writing at 0x00077e3a... (93 %)
+Writing at 0x00080648... (100 %)
+Wrote 477408 bytes (256455 compressed) at 0x00010000 in 6.4 seconds (effective 596.5 kbit/s)...
+Hash of data verified.
+Compressed 3072 bytes to 141...
+Writing at 0x00008000... (100 %)
+Wrote 3072 bytes (141 compressed) at 0x00008000 in 0.1 seconds (effective 436.1 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...

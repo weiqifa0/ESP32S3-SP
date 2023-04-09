@@ -1,0 +1,8 @@
+CMake Error at /Users/crisqifawei/esp/esp-idf/tools/cmake/project.cmake:243 (message):
+  Directory specified in EXTRA_COMPONENT_DIRS doesn't exist:
+  /Users/crisqifawei/esp/esp-idf/examples/common_components/led_strip
+Call Stack (most recent call first):
+  /Users/crisqifawei/esp/esp-idf/tools/cmake/project.cmake:327 (__project_init)
+  CMakeLists.txt:12 (project)
+
+

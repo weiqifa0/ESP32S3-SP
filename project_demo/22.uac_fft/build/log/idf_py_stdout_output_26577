@@ -1,0 +1,92 @@
+[1/248] Performing build step for 'bootloader'
+[1/1] cd /Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/build/bootloader/esp-idf/esptool_py && /Users/crisqifawei/.espressif/python_env/idf5.0_py3.9_env/bin/python /Users/crisqifawei/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x0 /Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/build/bootloader/bootloader.bin
+Bootloader binary size 0x5d10 bytes. 0x22f0 bytes (27%) free.
+[2/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_28_compressed.c.obj
+[3/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_24.c.obj
+[4/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_18.c.obj
+[5/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_22.c.obj
+[6/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_20.c.obj
+[7/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_28.c.obj
+[8/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_26.c.obj
+[9/248] No install step for 'bootloader'
+[10/248] Completed 'bootloader'
+[11/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_32.c.obj
+[12/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_36.c.obj
+[13/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_40.c.obj
+[14/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_38.c.obj
+[15/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_34.c.obj
+[16/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_42.c.obj
+[17/248] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/app_main.c.obj
+FAILED: esp-idf/main/CMakeFiles/__idf_main.dir/app_main.c.obj 
+/Users/crisqifawei/.espressif/tools/xtensa-esp32s3-elf/esp-2022r1-11.2.0/xtensa-esp32s3-elf/bin/xtensa-esp32s3-elf-gcc -DLV_CONF_INCLUDE_SIMPLE=1 -DLV_LVGL_H_INCLUDE_SIMPLE -DLV_PNG_USE_LV_FILESYSTEM -DMBEDTLS_CONFIG_FILE=\"mbedtls/esp_config.h\" -DUNITY_INCLUDE_CONFIG_H -I/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/build/config -I/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main -I/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/page -I/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/fft_soft -I/Users/crisqifawei/esp/esp-idf/components/newlib/platform_include -I/Users/crisqifawei/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include -I/Users/crisqifawei/esp/esp-idf/components/freertos/esp_additions/include/freertos -I/Users/crisqifawei/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include -I/Users/crisqifawei/esp/esp-idf/components/freertos/esp_additions/include -I/Users/crisqifawei/esp/esp-idf/components/esp_hw_support/include -I/Users/crisqifawei/esp/esp-idf/components/esp_hw_support/include/soc -I/Users/crisqifawei/esp/esp-idf/components/esp_hw_support/include/soc/esp32s3 -I/Users/crisqifawei/esp/esp-idf/components/esp_hw_support/port/esp32s3/. -I/Users/crisqifawei/esp/esp-idf/components/esp_hw_support/port/esp32s3/private_include -I/Users/crisqifawei/esp/esp-idf/components/heap/include -I/Users/crisqifawei/esp/esp-idf/components/log/include -I/Users/crisqifawei/esp/esp-idf/components/soc/include -I/Users/crisqifawei/esp/esp-idf/components/soc/esp32s3/. -I/Users/crisqifawei/esp/esp-idf/components/soc/esp32s3/include -I/Users/crisqifawei/esp/esp-idf/components/hal/esp32s3/include -I/Users/crisqifawei/esp/esp-idf/components/hal/include -I/Users/crisqifawei/esp/esp-idf/components/hal/platform_port/include -I/Users/crisqifawei/esp/esp-idf/components/esp_rom/include -I/Users/crisqifawei/esp/esp-idf/components/esp_rom/include/esp32s3 -I/Users/crisqifawei/esp/esp-idf/components/esp_rom/esp32s3 -I/Users/crisqifawei/esp/esp-idf/components/esp_common/include -I/Users/crisqifawei/esp/esp-idf/components/esp_system/include -I/Users/crisqifawei/esp/esp-idf/components/esp_system/port/soc -I/Users/crisqifawei/esp/esp-idf/components/esp_system/port/include/private -I/Users/crisqifawei/esp/esp-idf/components/xtensa/include -I/Users/crisqifawei/esp/esp-idf/components/xtensa/esp32s3/include -I/Users/crisqifawei/esp/esp-idf/components/lwip/include -I/Users/crisqifawei/esp/esp-idf/components/lwip/include/apps -I/Users/crisqifawei/esp/esp-idf/components/lwip/include/apps/sntp -I/Users/crisqifawei/esp/esp-idf/components/lwip/lwip/src/include -I/Users/crisqifawei/esp/esp-idf/components/lwip/port/esp32/include -I/Users/crisqifawei/esp/esp-idf/components/lwip/port/esp32/include/arch -I/Users/crisqifawei/esp/esp-idf/components/esp_ringbuf/include -I/Users/crisqifawei/esp/esp-idf/components/efuse/include -I/Users/crisqifawei/esp/esp-idf/components/efuse/esp32s3/include -I/Users/crisqifawei/esp/esp-idf/components/driver/include -I/Users/crisqifawei/esp/esp-idf/components/driver/deprecated -I/Users/crisqifawei/esp/esp-idf/components/driver/esp32s3/include -I/Users/crisqifawei/esp/esp-idf/components/esp_pm/include -I/Users/crisqifawei/esp/esp-idf/components/mbedtls/port/include -I/Users/crisqifawei/esp/esp-idf/components/mbedtls/mbedtls/include -I/Users/crisqifawei/esp/esp-idf/components/mbedtls/mbedtls/library -I/Users/crisqifawei/esp/esp-idf/components/mbedtls/esp_crt_bundle/include -I/Users/crisqifawei/esp/esp-idf/components/esp_app_format/include -I/Users/crisqifawei/esp/esp-idf/components/bootloader_support/include -I/Users/crisqifawei/esp/esp-idf/components/bootloader_support/bootloader_flash/include -I/Users/crisqifawei/esp/esp-idf/components/esp_partition/include -I/Users/crisqifawei/esp/esp-idf/components/app_update/include -I/Users/crisqifawei/esp/esp-idf/components/spi_flash/include -I/Users/crisqifawei/esp/esp-idf/components/pthread/include -I/Users/crisqifawei/esp/esp-idf/components/esp_timer/include -I/Users/crisqifawei/esp/esp-idf/components/app_trace/include -I/Users/crisqifawei/esp/esp-idf/components/esp_event/include -I/Users/crisqifawei/esp/esp-idf/components/nvs_flash/include -I/Users/crisqifawei/esp/esp-idf/components/esp_phy/include -I/Users/crisqifawei/esp/esp-idf/components/esp_phy/esp32s3/include -I/Users/crisqifawei/esp/esp-idf/components/vfs/include -I/Users/crisqifawei/esp/esp-idf/components/esp_netif/include -I/Users/crisqifawei/esp/esp-idf/components/wpa_supplicant/include -I/Users/crisqifawei/esp/esp-idf/components/wpa_supplicant/port/include -I/Users/crisqifawei/esp/esp-idf/components/wpa_supplicant/esp_supplicant/include -I/Users/crisqifawei/esp/esp-idf/components/esp_wifi/include -I/Users/crisqifawei/esp/esp-idf/components/unity/include -I/Users/crisqifawei/esp/esp-idf/components/unity/unity/src -I/Users/crisqifawei/esp/esp-idf/components/cmock/CMock/src -I/Users/crisqifawei/esp/esp-idf/components/console -I/Users/crisqifawei/esp/esp-idf/components/http_parser -I/Users/crisqifawei/esp/esp-idf/components/esp-tls -I/Users/crisqifawei/esp/esp-idf/components/esp-tls/esp-tls-crypto -I/Users/crisqifawei/esp/esp-idf/components/esp_adc/include -I/Users/crisqifawei/esp/esp-idf/components/esp_adc/interface -I/Users/crisqifawei/esp/esp-idf/components/esp_adc/esp32s3/include -I/Users/crisqifawei/esp/esp-idf/components/esp_adc/deprecated/include -I/Users/crisqifawei/esp/esp-idf/components/esp_eth/include -I/Users/crisqifawei/esp/esp-idf/components/esp_gdbstub/include -I/Users/crisqifawei/esp/esp-idf/components/esp_gdbstub/xtensa -I/Users/crisqifawei/esp/esp-idf/components/esp_gdbstub/esp32s3 -I/Users/crisqifawei/esp/esp-idf/components/esp_hid/include -I/Users/crisqifawei/esp/esp-idf/components/tcp_transport/include -I/Users/crisqifawei/esp/esp-idf/components/esp_http_client/include -I/Users/crisqifawei/esp/esp-idf/components/esp_http_server/include -I/Users/crisqifawei/esp/esp-idf/components/esp_https_ota/include -I/Users/crisqifawei/esp/esp-idf/components/esp_lcd/include -I/Users/crisqifawei/esp/esp-idf/components/esp_lcd/interface -I/Users/crisqifawei/esp/esp-idf/components/protobuf-c/protobuf-c -I/Users/crisqifawei/esp/esp-idf/components/protocomm/include/common -I/Users/crisqifawei/esp/esp-idf/components/protocomm/include/security -I/Users/crisqifawei/esp/esp-idf/components/protocomm/include/transports -I/Users/crisqifawei/esp/esp-idf/components/esp_local_ctrl/include -I/Users/crisqifawei/esp/esp-idf/components/esp_psram/include -I/Users/crisqifawei/esp/esp-idf/components/espcoredump/include -I/Users/crisqifawei/esp/esp-idf/components/espcoredump/include/port/xtensa -I/Users/crisqifawei/esp/esp-idf/components/wear_levelling/include -I/Users/crisqifawei/esp/esp-idf/components/sdmmc/include -I/Users/crisqifawei/esp/esp-idf/components/fatfs/diskio -I/Users/crisqifawei/esp/esp-idf/components/fatfs/vfs -I/Users/crisqifawei/esp/esp-idf/components/fatfs/src -I/Users/crisqifawei/esp/esp-idf/components/idf_test/include -I/Users/crisqifawei/esp/esp-idf/components/idf_test/include/esp32s3 -I/Users/crisqifawei/esp/esp-idf/components/ieee802154/include -I/Users/crisqifawei/esp/esp-idf/components/json/cJSON -I/Users/crisqifawei/esp/esp-idf/components/mqtt/esp-mqtt/include -I/Users/crisqifawei/esp/esp-idf/components/perfmon/include -I/Users/crisqifawei/esp/esp-idf/components/spiffs/include -I/Users/crisqifawei/esp/esp-idf/components/touch_element/include -I/Users/crisqifawei/esp/esp-idf/components/ulp/ulp_common/include -I/Users/crisqifawei/esp/esp-idf/components/ulp/ulp_common/include/esp32s3 -I/Users/crisqifawei/esp/esp-idf/components/usb/include -I/Users/crisqifawei/esp/esp-idf/components/wifi_provisioning/include -I/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/components/lvgl -I/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/components/lvgl/lvgl -I/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/components/font -I/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/components/lv_examples -I/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/components/lv_lib_gif -I/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/components/lv_lib_png -I/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/components/lv_lib_split_jpg -I/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/components/lvgl_esp32_drivers -I/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/components/lvgl_esp32_drivers/lvgl_tft -mlongcalls  -fdiagnostics-color=always -ffunction-sections -fdata-sections -Wall -Werror=all -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=deprecated-declarations -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-enum-conversion -gdwarf-4 -ggdb -Og -fmacro-prefix-map=/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft=. -fmacro-prefix-map=/Users/crisqifawei/esp/esp-idf=/IDF -fstrict-volatile-bitfields -Wno-error=unused-but-set-variable -fno-jump-tables -fno-tree-switch-conversion -DconfigENABLE_FREERTOS_DEBUG_OCDAWARE=1 -std=gnu17 -Wno-old-style-declaration -D_GNU_SOURCE -DIDF_VER=\"v5.0.1\" -DESP_PLATFORM -D_POSIX_READER_WRITER_LOCKS -MD -MT esp-idf/main/CMakeFiles/__idf_main.dir/app_main.c.obj -MF esp-idf/main/CMakeFiles/__idf_main.dir/app_main.c.obj.d -o esp-idf/main/CMakeFiles/__idf_main.dir/app_main.c.obj -c /Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c: In function 'gui_task':
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c:71:15: error: unknown type name 'esp_timer_create_args_t'
+   71 |         const esp_timer_create_args_t periodic_timer_args = {
+      |               ^~~~~~~~~~~~~~~~~~~~~~~
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c:72:17: error: field name not in record or union initializer
+   72 |                 .callback = &lv_tick_task,
+      |                 ^
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c:72:17: note: (near initialization for 'periodic_timer_args')
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c:72:29: warning: initialization of 'int' from 'void (*)(void *)' makes integer from pointer without a cast [-Wint-conversion]
+   72 |                 .callback = &lv_tick_task,
+      |                             ^
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c:72:29: note: (near initialization for 'periodic_timer_args')
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c:73:17: error: field name not in record or union initializer
+   73 |                 .name = "periodic_gui"};
+      |                 ^
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c:73:17: note: (near initialization for 'periodic_timer_args')
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c:73:25: warning: excess elements in scalar initializer
+   73 |                 .name = "periodic_gui"};
+      |                         ^~~~~~~~~~~~~~
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c:73:25: note: (near initialization for 'periodic_timer_args')
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c:74:9: error: unknown type name 'esp_timer_handle_t'
+   74 |         esp_timer_handle_t periodic_timer;
+      |         ^~~~~~~~~~~~~~~~~~
+In file included from /Users/crisqifawei/esp/esp-idf/components/esp_hw_support/include/esp_intr_alloc.h:11,
+                 from /Users/crisqifawei/esp/esp-idf/components/esp_hw_support/include/esp_cpu.h:20,
+                 from /Users/crisqifawei/esp/esp-idf/components/esp_hw_support/include/spinlock.h:11,
+                 from /Users/crisqifawei/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos/portmacro.h:74,
+                 from /Users/crisqifawei/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include/freertos/portable.h:58,
+                 from /Users/crisqifawei/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include/freertos/FreeRTOS.h:70,
+                 from /Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c:12:
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c:75:25: error: implicit declaration of function 'esp_timer_create' [-Werror=implicit-function-declaration]
+   75 |         ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
+      |                         ^~~~~~~~~~~~~~~~
+/Users/crisqifawei/esp/esp-idf/components/esp_common/include/esp_err.h:117:30: note: in definition of macro 'ESP_ERROR_CHECK'
+  117 |         esp_err_t err_rc_ = (x);                                        \
+      |                              ^
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/app_main.c:76:25: error: implicit declaration of function 'esp_timer_start_periodic' [-Werror=implicit-function-declaration]
+   76 |         ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 10 * 1000));
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~
+/Users/crisqifawei/esp/esp-idf/components/esp_common/include/esp_err.h:117:30: note: in definition of macro 'ESP_ERROR_CHECK'
+  117 |         esp_err_t err_rc_ = (x);                                        \
+      |                              ^
+cc1: some warnings being treated as errors
+[18/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_30.c.obj
+[19/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_44.c.obj
+[20/248] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/page/page_fft.c.obj
+In file included from /Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/page/page_fft.c:25:
+/Users/crisqifawei/esp/esp-idf/components/driver/deprecated/driver/i2s.h:27:2: warning: #warning "This set of I2S APIs has been deprecated, please include 'driver/i2s_std.h', 'driver/i2s_pdm.h' or 'driver/i2s_tdm.h' instead. if you want to keep using the old APIs and ignore this warning, you can enable 'Suppress leagcy driver deprecated warning' option under 'I2S Configuration' menu in Kconfig" [-Wcpp]
+   27 | #warning "This set of I2S APIs has been deprecated, \
+      |  ^~~~~~~
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/page/page_fft.c: In function 'FFT_Task':
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/page/page_fft.c:277:16: warning: unused variable 'samples_fc32' [-Wunused-variable]
+  277 |         float *samples_fc32 = (float *)calloc(SAMPLES_NUM, sizeof(float));
+      |                ^~~~~~~~~~~~
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/page/page_fft.c:276:18: warning: unused variable 'samples_sc16' [-Wunused-variable]
+  276 |         int16_t *samples_sc16 = (int16_t *)i2s_readraw_buff;
+      |                  ^~~~~~~~~~~~
+At top level:
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/page/page_fft.c:322:13: warning: 'Event' defined but not used [-Wunused-function]
+  322 | static void Event(void *btn, int event)
+      |             ^~~~~
+/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/main/page/page_fft.c:178:13: warning: 'Exit' defined but not used [-Wunused-function]
+  178 | static void Exit(void)
+      |             ^~~~
+[21/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_46.c.obj
+[22/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_gpu/lv_gpu_stm32_dma2d.c.obj
+[23/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_unscii_8.c.obj
+[24/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_simsun_16_cjk.c.obj
+[25/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_font/lv_font_montserrat_48.c.obj
+[26/248] Building C object esp-idf/lvgl/CMakeFiles/__idf_lvgl.dir/lvgl/src/lv_hal/lv_hal_disp.c.obj
+ninja: build stopped: subcommand failed.

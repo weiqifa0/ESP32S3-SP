@@ -1,0 +1,5 @@
+[0/1] Re-running CMake...
+-- Building ESP-IDF components for target esp32s3
+-- Configuring incomplete, errors occurred!
+FAILED: build.ninja 
+/opt/homebrew/Cellar/cmake/3.26.1/bin/cmake --regenerate-during-build -S/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft -B/Users/crisqifawei/esp/ESP32S3-SP/22.uac_fft/build
