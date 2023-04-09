@@ -1,0 +1,6 @@
+{
+    "idf.adapterTargetName": "esp32s3",
+    "files.associations": {
+        "bsp_adc.h": "c"
+    }
+}
