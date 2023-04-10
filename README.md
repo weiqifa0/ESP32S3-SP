@@ -37,6 +37,10 @@ https://github.com/espressif/esp-box/tree/master/examples/usb_headset
 * cp -r $IDF_PATH/examples/get-started/hello_world . //拷贝参考实例到当前目录
 * git submodule update --init --recursiv //更新模块仓库
 
-* 切换esp-idf版本
+
+# Git相关
+- **递归更新子仓库**
+- git submodule update --init --recursive
+* **切换esp-idf版本**
 - git checkout v3.2
 - git submodule update --init --recursive
