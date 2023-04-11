@@ -48,12 +48,15 @@ https://github.com/espressif/esp-box/tree/master/examples/usb_headset
 # 常见错误
 python依赖包没有
 
-、、、
-The following Python requirements are not satisfied:
-click>=5.0
-pyserial>=3.0
-future>=0.15.2
-pyparsing>=2.0.3,<2.4.0
-pyelftools>=0.22
-、、、
-- pip install -r /Users/crisqifawei/esp/esp-idf/tools/requirements/requirements.core.txt
+'''
+To install the missing packages, please run "install.sh"
+Diagnostic information:
+    IDF_PYTHON_ENV_PATH: /Users/crisqifawei/.espressif/python_env/idf4.4_py3.9_env
+    Python interpreter used: /Users/crisqifawei/.espressif/python_env/idf4.4_py3.9_env/bin/python
+Constraint file: /Users/crisqifawei/.espressif/espidf.constraints.v5.1.txt
+Requirement files:
+ - /Users/crisqifawei/esp/esp-idf/tools/requirements/requirements.core.txt
+Python being checked: /Users/crisqifawei/.espressif/python_env/idf4.4_py3.9_env/bin/python
+'''
+
+-  ~/esp/esp-idf/install.sh /Users/crisqifawei/esp/esp-idf/tools/requirements/requirements.core.txt
