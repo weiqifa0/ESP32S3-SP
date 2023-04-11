@@ -44,3 +44,16 @@ https://github.com/espressif/esp-box/tree/master/examples/usb_headset
 * **切换esp-idf版本**
 - git checkout v3.2
 - git submodule update --init --recursive
+
+# 常见错误
+python依赖包没有
+
+、、、
+The following Python requirements are not satisfied:
+click>=5.0
+pyserial>=3.0
+future>=0.15.2
+pyparsing>=2.0.3,<2.4.0
+pyelftools>=0.22
+、、、
+- pip install -r /Users/crisqifawei/esp/esp-idf/tools/requirements/requirements.core.txt
