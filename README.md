@@ -10,6 +10,13 @@ https://mp.weixin.qq.com/s/TbulWs86TWMFHB3vj_xS_A
 
 # ESP32S3-uac 音频
 
+## 我调试uac音频的工程
+https://github.com/weiqifa0/esp-box
+
+编译usb_headset 这个例程，就可以通过电脑的uac录取到麦克风的音频
+<img width="1097" alt="image" src="https://user-images.githubusercontent.com/11375905/231496712-e31f19ff-bab7-47b9-aac3-4ff6ad302cc4.png">
+
+
 ## 设备做HOST的部分
 
 https://docs.espressif.com/projects/espressif-esp-iot-solution/zh_CN/latest/usb/usb_stream.html
@@ -48,7 +55,8 @@ https://github.com/espressif/esp-box/tree/master/examples/usb_headset
 # 常见错误
 python依赖包没有
 
-'''
+‘’‘C
+
 To install the missing packages, please run "install.sh"
 Diagnostic information:
     IDF_PYTHON_ENV_PATH: /Users/crisqifawei/.espressif/python_env/idf4.4_py3.9_env
@@ -57,6 +65,7 @@ Constraint file: /Users/crisqifawei/.espressif/espidf.constraints.v5.1.txt
 Requirement files:
  - /Users/crisqifawei/esp/esp-idf/tools/requirements/requirements.core.txt
 Python being checked: /Users/crisqifawei/.espressif/python_env/idf4.4_py3.9_env/bin/python
-'''
+
+‘’‘
 
 -  ~/esp/esp-idf/install.sh /Users/crisqifawei/esp/esp-idf/tools/requirements/requirements.core.txt
