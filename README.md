@@ -1,6 +1,7 @@
 # ESP32S3-SP
 
-- 开发板图片
+- 开发板图
+
 ![image](https://user-images.githubusercontent.com/11375905/231498216-7d6f6118-a4fd-4940-8c35-5172c50f5473.png)
 
 - 环境安装参考这个链接
