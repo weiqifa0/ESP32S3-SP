@@ -1,8 +1,13 @@
 # ESP32S3-SP
 
-环境安装参考这个链接
+- 开发板图片
+![image](https://user-images.githubusercontent.com/11375905/231498216-7d6f6118-a4fd-4940-8c35-5172c50f5473.png)
+
+- 环境安装参考这个链接
 
 https://mp.weixin.qq.com/s/TbulWs86TWMFHB3vj_xS_A
+
+https://mp.weixin.qq.com/s/89i9LeKZv3B2qcryyxUWUQ
 
 # 分支介绍
 * master分支的例程需要esp-idf 4.4的环境
@@ -55,7 +60,7 @@ https://github.com/espressif/esp-box/tree/master/examples/usb_headset
 # 常见错误
 python依赖包没有
 
-‘’‘C
+```c
 
 To install the missing packages, please run "install.sh"
 Diagnostic information:
@@ -66,6 +71,8 @@ Requirement files:
  - /Users/crisqifawei/esp/esp-idf/tools/requirements/requirements.core.txt
 Python being checked: /Users/crisqifawei/.espressif/python_env/idf4.4_py3.9_env/bin/python
 
-‘’‘
+```
+
+
 
 -  ~/esp/esp-idf/install.sh /Users/crisqifawei/esp/esp-idf/tools/requirements/requirements.core.txt
