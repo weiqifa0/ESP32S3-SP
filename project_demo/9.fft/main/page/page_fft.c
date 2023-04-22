@@ -21,6 +21,8 @@
 #include "math.h"
 #include "number.h"
 #include "fft.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 #include "driver/i2s.h"
 
@@ -28,7 +30,7 @@
 #define APP_WIN_WIDTH  240
 
 #define DISP_MAX_HOR        LV_HOR_RES
-#define DISP_MAX_VER        LV_VER_RES 
+#define DISP_MAX_VER        LV_VER_RES
 
 #define ANIEND  while(lv_anim_count_running())lv_task_handler();//等待动画完成
 
@@ -196,9 +198,9 @@ void FFT_Setup(void)
 {
 
 	//获取芯片可用内存
-	printf(" page_fft_start    esp_get_free_heap_size : %d  \n", esp_get_free_heap_size());
+	printf(" page_fft_start    esp_get_free_heap_size : %ld  \n", esp_get_free_heap_size());
 	//获取从未使用过的最小内存
-	printf(" page_fft_start    esp_get_minimum_free_heap_size : %d  \n", esp_get_minimum_free_heap_size());
+	printf(" page_fft_start    esp_get_minimum_free_heap_size : %ld  \n", esp_get_minimum_free_heap_size());
 	printf("%s !Dram: %d bytes\r\n", __func__, heap_caps_get_free_size(MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT));
 	Title_Create();
 	Cont_create();
@@ -284,8 +286,8 @@ void FFT_Task(void *arg)
 		if (fft_en == 1)
 		{
 
-			i2s_read(I2S_NUM_0, (char *)i2s_readraw_buff, SAMPLES_NUM * 2, &bytesread, (100 / portTICK_RATE_MS));
-			
+			i2s_read(I2S_NUM_0, (char *)i2s_readraw_buff, SAMPLES_NUM * 2, &bytesread, (100 / portTICK_PERIOD_MS));
+
 			fft_config_t *real_fft_plan = fft_init(512, FFT_REAL, FFT_FORWARD, NULL, NULL);
 			buffptr = (int16_t *)i2s_readraw_buff;
 			for (uint16_t count_n = 0; count_n < real_fft_plan->size; count_n++)
