@@ -94,7 +94,6 @@ static void gui_task(void *arg)
 extern char *Font_buff;
 void app_main(void)
 {
-
 	// 初始化nvs用于存放wifi或者其他需要掉电保存的东西
 	esp_err_t ret = nvs_flash_init();
 	if (ret == ESP_ERR_NVS_NO_FREE_PAGES)

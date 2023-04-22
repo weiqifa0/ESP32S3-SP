@@ -1,9 +1,27 @@
 dependencies:
+  espressif/es7210:
+    component_hash: f6fac5afbf43337f715a9665b80c2db1912292fcb63237bb56515ed94b3012e2
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 1.0.1
+  espressif/esp-dsp:
+    component_hash: a9a1e516033ce2ea63e6286cc227d8ecb87769d628dcc6394b4e024311ac64b9
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 1.3.0
+  espressif/tinyusb:
+    component_hash: 820a2eef39c7ff0b810e859efd7035a4e5b9b44e77c49020a50ef0668fc941ae
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 0.14.2
   idf:
     component_hash: null
     source:
       type: idf
-    version: 4.4.2
-manifest_hash: 7f54ce1de0a609294e66e8b691f5806f89d21f6ec0590b6d2c3f142f6ee75bda
+    version: 5.0.1
+manifest_hash: fb2f9bce4b60233e568e1aef132f46e906f4b246a9cd9cc240446d7e2b68680c
 target: esp32s3
 version: 1.0.0
