@@ -24,6 +24,7 @@
 #include "page_fft.h"
 #include "esp_log.h"
 #include "esp_timer.h"
+#include "usb_headset.h"
 
 #define TAG "ESP32S3"
 /*用定时器给LVGL提供时钟*/
@@ -103,5 +104,5 @@ void app_main(void)
 	}
 	ESP_ERROR_CHECK(ret);
 	xTaskCreatePinnedToCore(&gui_task, "gui_task", 1024 * 8, NULL, 6, NULL, 0);
-
+	usb_headset_init();
 }
