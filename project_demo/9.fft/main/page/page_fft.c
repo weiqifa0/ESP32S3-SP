@@ -55,7 +55,7 @@ lv_chart_series_t *series_fft;
  * @param  无
  * @retval 无
  */
-static void Title_Create()
+static void TitleTextCreate()
 {
 	LV_FONT_DECLARE(number);
 	appWindow = lv_cont_create(lv_scr_act(), NULL);
@@ -98,14 +98,14 @@ static void Title_Create()
 	lv_label_set_recolor(labelTitle, true);
 
 	/*默认选中的是第二个图标*/
-	lv_label_set_static_text(labelTitle, "Spectrum");
+	lv_label_set_static_text(labelTitle, "MicFFT");
 	lv_obj_align(labelTitle, NULL, LV_ALIGN_IN_TOP_MID, 0, 0);
 	lv_obj_set_auto_realign(labelTitle, true);
 
 	lineTitle = lv_line_create(appWindow, NULL);
 	static lv_style_t style_line;
 	lv_style_init(&style_line);
-	lv_style_set_line_color(&style_line, LV_STATE_DEFAULT, lv_color_make(0xFa, 0x05, 0x05));
+	lv_style_set_line_color(&style_line, LV_STATE_DEFAULT, lv_color_make(0xFF, 0x3E, 0x96));
 	lv_style_set_line_width(&style_line, LV_STATE_DEFAULT, 5);
 	lv_obj_add_style(lineTitle, LV_LINE_PART_MAIN, &style_line);
 	lv_obj_set_pos(lineTitle, 0, 55);
@@ -115,25 +115,24 @@ static void Title_Create()
 	lv_line_set_points(lineTitle, screen_line3, 2);
 }
 //创建包含框界面
-static void Cont_create(void)
+static void MicDataShowCreate(void)
 {
-
 	contDisp = lv_cont_create(appWindow, NULL);
 	static lv_style_t style_cont;
 	lv_style_set_pad_left(&style_cont, LV_STATE_DEFAULT, 0);
 	lv_style_set_bg_opa(&style_cont, LV_STATE_DEFAULT, 50);
 	lv_style_set_pad_top(&style_cont, LV_STATE_DEFAULT, 0);
-	lv_style_set_border_color(&style_cont, LV_STATE_DEFAULT, LV_COLOR_BLACK);
+	lv_style_set_border_color(&style_cont, LV_STATE_DEFAULT, LV_COLOR_MAROON);
 	lv_style_set_border_width(&style_cont, LV_STATE_DEFAULT, 0);
 	lv_style_set_border_opa(&style_cont, LV_STATE_DEFAULT, 50);
-	lv_style_set_bg_color(&style_cont, LV_STATE_DEFAULT, LV_COLOR_BLACK); //设置屏幕背景
+	lv_style_set_bg_color(&style_cont, LV_STATE_DEFAULT, LV_COLOR_MAROON); //设置屏幕背景
 	lv_obj_add_style(contDisp, LV_BTN_PART_MAIN, &style_cont);			  /*Default button style*/
 	lv_obj_set_size(contDisp, APP_WIN_WIDTH, APP_WIN_HEIGHT - 60);
 	lv_obj_set_pos(contDisp, 0, 60);
 
 	chart_fft = lv_chart_create(contDisp, NULL);
 	lv_obj_set_size(chart_fft, APP_WIN_WIDTH, APP_WIN_HEIGHT - 60);
-	lv_chart_set_point_count(chart_fft, 50);
+	lv_chart_set_point_count(chart_fft, 500);
 	lv_obj_align(chart_fft, NULL, LV_ALIGN_CENTER, 0, 0);
 
 	lv_obj_set_style_local_bg_opa(chart_fft, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, 100); /*Max. opa.*/
@@ -141,55 +140,18 @@ static void Cont_create(void)
 	lv_obj_set_style_local_bg_main_stop(chart_fft, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, 255); /*Max opa on the top*/
 	lv_obj_set_style_local_bg_grad_stop(chart_fft, LV_CHART_PART_SERIES, LV_STATE_DEFAULT, 255); /*Transparent on the bottom*/
 
-	lv_chart_set_type(chart_fft, LV_CHART_TYPE_COLUMN); //直线柱模式
+	lv_chart_set_type(chart_fft, LV_CHART_TYPE_SCATTER);
 
-	// lv_chart_set_type(chart_fft, LV_CHART_TYPE_LINE); //折线模式
+	//lv_chart_set_type(chart_fft, LV_CHART_TYPE_LINE); //折线模式
 
 	lv_chart_set_range(chart_fft, 0, APP_WIN_HEIGHT);
 
-	series_fft = lv_chart_add_series(chart_fft, LV_COLOR_RED);
+	series_fft = lv_chart_add_series(chart_fft, LV_COLOR_GREEN);
 }
-// //当前界面是菜单时MOVE任务要做的事情
-// void move_task_fft(uint8_t move)
-// {
-
-// 	switch (move)
-// 	{
-// 	case BT1_DOWN: //往上移动
-// 		lv_chart_set_type(chart_fft, LV_CHART_TYPE_LINE);
-// 		break;
-// 	case BT1_LONG: //往上移动
-
-// 		break;
-// 	case BT1_LONGFREE: //往上移动
-// 		break;
-// 	case BT3_DOWN: //往下移动
-// 		lv_chart_set_type(chart_fft, LV_CHART_TYPE_COLUMN);
-// 		break;
-// 	case BT3_LONG: //往下移动
-
-// 		break;
-// 	case BT3_LONGFREE: //往上移动
-// 		break;
-
-// 	default:
-// 		break;
-// 	}
-// }
 
 static void Exit(void)
 {
 	fft_en = 0;
-	// obj_add_anim(
-	// 	appWindow,						   //动画对象
-	// 	(lv_anim_exec_xcb_t)lv_obj_set_x,  //动画函数
-	// 	lv_anim_speed_to_time(300, 0, 50), //动画速度
-	// 	0,								   //起始值
-	// 	APP_WIN_WIDTH,					   //结束值
-	// 	lv_anim_path_ease_out			   //动画特效:模拟弹性物体下落
-	// );
-
-	// ANIEND
 	lv_obj_del(appWindow);
 	printf("%s !Dram: %d bytes\r\n", __func__, heap_caps_get_free_size(MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT));
 }
@@ -202,22 +164,11 @@ void FFT_Setup(void)
 	//获取从未使用过的最小内存
 	printf(" page_fft_start    esp_get_minimum_free_heap_size : %ld  \n", esp_get_minimum_free_heap_size());
 	printf("%s !Dram: %d bytes\r\n", __func__, heap_caps_get_free_size(MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT));
-	Title_Create();
-	Cont_create();
-	// obj_add_anim(
-	// 	appWindow,						   //动画对象
-	// 	(lv_anim_exec_xcb_t)lv_obj_set_x,  //动画函数
-	// 	lv_anim_speed_to_time(300, 0, 50), //动画速度
-	// 	APP_WIN_WIDTH,					   //起始值
-	// 	0,								   //结束值
-	// 	lv_anim_path_ease_out			   //动画特效:模拟弹性物体下落
-	// );
-	// ANIEND
+	TitleTextCreate();
+	MicDataShowCreate();
 	fft_en = 1;
 
 	xTaskCreatePinnedToCore(&FFT_Task, "FFT_Task", 1024 * 8, NULL, 6, NULL, 0);
-	// lv_obj_set_click(lv_layer_top(), true);
-	// lv_obj_set_event_cb(lv_layer_top(), event_handler_touch);
 }
 
 long map(long x, long in_min, long in_max, long out_min, long out_max)
@@ -240,8 +191,8 @@ extern lv_obj_t *chart_fft;
 extern lv_chart_series_t *series_fft;
 #define IIS_SCLK 16
 #define IIS_LCLK 7
-#define IIS_DSIN -1
-#define IIS_DOUT 15
+#define IIS_DSIN 15
+#define IIS_DOUT -1
 static void i2s_init(void)
 {
 	i2s_config_t i2s_config = {
@@ -257,8 +208,8 @@ static void i2s_init(void)
 	i2s_pin_config_t pin_config = {
 		.bck_io_num = IIS_SCLK,	  // IIS_SCLK
 		.ws_io_num = IIS_LCLK,	  // IIS_LCLK
-		.data_out_num = IIS_DSIN, // IIS_DSIN
-		.data_in_num = IIS_DOUT	  // IIS_DOUT
+		.data_out_num = IIS_DOUT, // IIS_DOUT
+		.data_in_num = IIS_DSIN	  // IIS_DSIN
 	};
 	i2s_driver_install(I2S_NUM_0, &i2s_config, 0, NULL);
 	i2s_set_pin(I2S_NUM_0, &pin_config);
@@ -278,7 +229,6 @@ void FFT_Task(void *arg)
 	int16_t *samples_sc16 = (int16_t *)i2s_readraw_buff;
 	float *samples_fc32 = (float *)calloc(SAMPLES_NUM, sizeof(float));
 	double data = 0;
-	// uint8_t *fft_dis_buff = NULL;
 	i2s_init();
 
 	while (1)
