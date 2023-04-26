@@ -23,7 +23,7 @@
 #include "fft.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-
+#include "audio_queue.h"
 #include "driver/i2s.h"
 
 #define APP_WIN_HEIGHT 240
@@ -31,9 +31,8 @@
 
 #define DISP_MAX_HOR        LV_HOR_RES
 #define DISP_MAX_VER        LV_VER_RES
-
+QueueHandle_t g_audioQueue;
 #define ANIEND  while(lv_anim_count_running())lv_task_handler();//等待动画完成
-
 
 /*此页面窗口*/
 static lv_obj_t *appWindow;
@@ -193,6 +192,7 @@ extern lv_chart_series_t *series_fft;
 #define IIS_LCLK 7
 #define IIS_DSIN 15
 #define IIS_DOUT -1
+
 static void i2s_init(void)
 {
 	i2s_config_t i2s_config = {
@@ -214,8 +214,13 @@ static void i2s_init(void)
 	i2s_driver_install(I2S_NUM_0, &i2s_config, 0, NULL);
 	i2s_set_pin(I2S_NUM_0, &pin_config);
 	i2s_zero_dma_buffer(I2S_NUM_0);
+	// 创建音频数据队列
+	g_audioQueue = xQueueCreate(AUDIO_QUEUE_LENGTH, sizeof(AudioPacket));
+	if (g_audioQueue == NULL) {
+		printf("Failed to create audio queue\n");
+	}
 }
-
+	int8_t i2s_read_rawdata[1024];
 /**
  * @descripttion: fft频谱任务
  * @param {void} *arg
@@ -223,23 +228,27 @@ static void i2s_init(void)
  */
 void FFT_Task(void *arg)
 {
-	static int8_t i2s_readraw_buff[1024];
 	size_t bytesread;
 	int16_t *buffptr;
-	int16_t *samples_sc16 = (int16_t *)i2s_readraw_buff;
-	float *samples_fc32 = (float *)calloc(SAMPLES_NUM, sizeof(float));
+	float *samples_fc32 = (float *)calloc(AUDIO_PACKET_SIZE, sizeof(float));
 	double data = 0;
+	AudioPacket packet;
 	i2s_init();
 
 	while (1)
 	{
 		if (fft_en == 1)
 		{
-
-			i2s_read(I2S_NUM_0, (char *)i2s_readraw_buff, SAMPLES_NUM * 2, &bytesread, (100 / portTICK_PERIOD_MS));
-
+			i2s_read(I2S_NUM_0, (char *)packet.data, AUDIO_PACKET_SIZE, &bytesread, (AUDIO_CAPTURE_TIME_MS / portTICK_PERIOD_MS));
+			packet.size = bytesread;
+			// 将音频数据包写入队列
+			if (g_audioQueue == NULL || xQueueSend(g_audioQueue, &packet, portTICK_PERIOD_MS) != pdTRUE) {
+				if (xQueueReceive(g_audioQueue, &packet, portTICK_PERIOD_MS) == pdTRUE) {
+					printf("packet.size = %ld\n", packet.size);
+				}
+			}
 			fft_config_t *real_fft_plan = fft_init(512, FFT_REAL, FFT_FORWARD, NULL, NULL);
-			buffptr = (int16_t *)i2s_readraw_buff;
+			buffptr = (int16_t *)packet.data;
 			for (uint16_t count_n = 0; count_n < real_fft_plan->size; count_n++)
 			{
 				real_fft_plan->input[count_n] = (float)map(buffptr[count_n], INT16_MIN, INT16_MAX, -1000, 1000);
