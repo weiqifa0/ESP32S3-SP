@@ -1,30 +1,27 @@
 /*
- * @Descripttion :
- * @version      :
- * @Author       : Kevincoooool
- * @Date         : 2021-06-05 10:13:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-04 14:08:58
- * @FilePath: \SP_DEMO\9.fft\main\page\page_fft.c
- */
-#include "page_fft.h"
-#include "app_main.h"
-#include "stdio.h"
+** Copyright (c) 2023 The tinyuac project. All rights reserved.
+** Created by crisqifawei 2023
+*/
+
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+#include <esp_system.h>
 #include "lvgl/lvgl.h"
 #include "lvgl_helpers.h"
 #include "lv_port_indev.h"
-#include <esp_system.h>
 #include "esp_log.h"
-#include "lv_port_indev.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 #include "math.h"
 #include "number.h"
 #include "fft.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#include "fft_user_interface.h"
 #include "audio_queue.h"
-#include "driver/i2s.h"
+#include "platform_i2s_interface.h"
+
+#include "app_main.h"
+
 
 #define APP_WIN_HEIGHT 240
 #define APP_WIN_WIDTH  240
@@ -185,42 +182,10 @@ long map(long x, long in_min, long in_max, long out_min, long out_max)
 
 uint8_t fft_en = 0;
 uint8_t fft_dis_buff[240] = {0};
-#define SAMPLES_NUM (512)
 extern lv_obj_t *chart_fft;
 extern lv_chart_series_t *series_fft;
-#define IIS_SCLK 16
-#define IIS_LCLK 7
-#define IIS_DSIN 15
-#define IIS_DOUT -1
 
-static void i2s_init(void)
-{
-	i2s_config_t i2s_config = {
-		.mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX),
-		.sample_rate = 16000,
-		.bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
-		.channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
-		.communication_format = I2S_COMM_FORMAT_STAND_I2S,
-		.intr_alloc_flags = ESP_INTR_FLAG_LOWMED,
-		.dma_buf_count = 2,
-		.dma_buf_len = SAMPLES_NUM,
-	};
-	i2s_pin_config_t pin_config = {
-		.bck_io_num = IIS_SCLK,	  // IIS_SCLK
-		.ws_io_num = IIS_LCLK,	  // IIS_LCLK
-		.data_out_num = IIS_DOUT, // IIS_DOUT
-		.data_in_num = IIS_DSIN	  // IIS_DSIN
-	};
-	i2s_driver_install(I2S_NUM_0, &i2s_config, 0, NULL);
-	i2s_set_pin(I2S_NUM_0, &pin_config);
-	i2s_zero_dma_buffer(I2S_NUM_0);
-	// 创建音频数据队列
-	g_audioQueue = xQueueCreate(AUDIO_QUEUE_LENGTH, sizeof(AudioPacket));
-	if (g_audioQueue == NULL) {
-		printf("Failed to create audio queue\n");
-	}
-}
-	int8_t i2s_read_rawdata[1024];
+int8_t i2s_read_rawdata[1024];
 /**
  * @descripttion: fft频谱任务
  * @param {void} *arg
@@ -233,38 +198,40 @@ void FFT_Task(void *arg)
 	float *samples_fc32 = (float *)calloc(AUDIO_PACKET_SIZE, sizeof(float));
 	double data = 0;
 	AudioPacket packet;
-	i2s_init();
+
+	// 创建音频数据队列
+	g_audioQueue = xQueueCreate(AUDIO_QUEUE_LENGTH, sizeof(AudioPacket));
+	if (g_audioQueue == NULL) {
+		printf("Failed to create audio queue\n");
+	}
+
+	//platform_i2s_init();
 
 	while (1)
 	{
 		if (fft_en == 1)
 		{
-			i2s_read(I2S_NUM_0, (char *)packet.data, AUDIO_PACKET_SIZE, &bytesread, (AUDIO_CAPTURE_TIME_MS / portTICK_PERIOD_MS));
-			packet.size = bytesread;
-			// 将音频数据包写入队列
-			if (g_audioQueue == NULL || xQueueSend(g_audioQueue, &packet, portTICK_PERIOD_MS) != pdTRUE) {
-				if (xQueueReceive(g_audioQueue, &packet, portTICK_PERIOD_MS) == pdTRUE) {
-					printf("packet.size = %ld\n", packet.size);
+			//i2s_read(I2S_NUM_0, (char *)packet.data, AUDIO_PACKET_SIZE, &bytesread, pdMS_TO_TICKS(1000));
+			if (xQueueReceive(g_audioQueue, &packet, portTICK_PERIOD_MS) ) {
+				fft_config_t *real_fft_plan = fft_init(64, FFT_REAL, FFT_FORWARD, NULL, NULL);
+				buffptr = (int16_t *)packet.data;
+				for (uint16_t count_n = 0; count_n < real_fft_plan->size; count_n++)
+				{
+					real_fft_plan->input[count_n] = (float)map(buffptr[count_n], INT16_MIN, INT16_MAX, -1000, 1000);
 				}
-			}
-			fft_config_t *real_fft_plan = fft_init(512, FFT_REAL, FFT_FORWARD, NULL, NULL);
-			buffptr = (int16_t *)packet.data;
-			for (uint16_t count_n = 0; count_n < real_fft_plan->size; count_n++)
-			{
-				real_fft_plan->input[count_n] = (float)map(buffptr[count_n], INT16_MIN, INT16_MAX, -1000, 1000);
-			}
-			fft_execute(real_fft_plan);
-			for (uint16_t count_n = 1; count_n < CANVAS_HEIGHT; count_n++)
-			{
-				data = sqrt(real_fft_plan->output[2 * count_n] * real_fft_plan->output[2 * count_n] + real_fft_plan->output[2 * count_n + 1] * real_fft_plan->output[2 * count_n + 1]);
-				fft_dis_buff[CANVAS_HEIGHT - count_n] = map(data, 0, 2000, 0, 240);
-			}
-			fft_destroy(real_fft_plan);
+				fft_execute(real_fft_plan);
+				for (uint16_t count_n = 1; count_n < CANVAS_HEIGHT; count_n++)
+				{
+					data = sqrt(real_fft_plan->output[2 * count_n] * real_fft_plan->output[2 * count_n] + real_fft_plan->output[2 * count_n + 1] * real_fft_plan->output[2 * count_n + 1]);
+					fft_dis_buff[CANVAS_HEIGHT - count_n] = map(data, 0, 2000, 0, 240);
+				}
+				fft_destroy(real_fft_plan);
 
-			for (uint16_t count_y = 0; count_y < 240;)
-			{
-				lv_chart_set_next(chart_fft, series_fft, fft_dis_buff[count_y]);
-				count_y += 5;
+				for (uint16_t count_y = 0; count_y < 240;)
+				{
+					lv_chart_set_next(chart_fft, series_fft, fft_dis_buff[count_y]);
+					count_y += 5;
+				}
 			}
 		}
 		else
@@ -273,13 +240,4 @@ void FFT_Task(void *arg)
 			vTaskDelete(NULL);
 		}
 	}
-}
-/**
- * @brief  页面事件
- * @param  btn:发出事件的按键
- * @param  event:事件编号
- * @retval 无
- */
-static void Event(void *btn, int event)
-{
 }

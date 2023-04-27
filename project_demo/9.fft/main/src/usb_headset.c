@@ -10,6 +10,7 @@
 #include "usb_headset.h"
 #include "driver/i2s_std.h"
 #include "audio_queue.h"
+#include "platform_i2s_interface.h"
 //--------------------------------------------------------------------+
 // MACRO CONSTANT TYPEDEF PROTOTYPES
 //--------------------------------------------------------------------+
@@ -27,7 +28,7 @@ uint32_t current_sample_rate  = 48000;
 
 #define N_SAMPLE_RATES  TU_ARRAY_SIZE(sample_rates)
 
-#define AUDIO_LENGTH 96
+#define AUDIO_LENGTH 640
 
 /* Blink pattern
  * - 25 ms   : streaming data
@@ -76,9 +77,10 @@ const uint8_t resolutions_per_format[CFG_TUD_AUDIO_FUNC_1_N_FORMATS] = {CFG_TUD_
                                                                        };
 // Current resolution, update on format change
 uint8_t current_resolution;
+AudioPacket g_audio_packet;
 
 // void led_blinking_task(void);
-void audio_task(void);
+
 
 static usb_phy_handle_t phy_hdl;
 static void usb_phy_init(void)
@@ -104,14 +106,29 @@ static void usb_task(void *pvParam)
 	vTaskDelete(NULL);
 }
 
+static void send_audio_task(void *pvParam)
+{
+	(void) pvParam;
+	do {
+		if (g_audioQueue) {
+			xQueueSend(g_audioQueue, &g_audio_packet, portTICK_PERIOD_MS);
+		}
+		vTaskDelay(pdMS_TO_TICKS(600));
+	} while (true);
+
+	vTaskDelete(NULL);
+}
+
 /*------------- MAIN -------------*/
 esp_err_t usb_headset_init(void)
 {
 	usb_phy_init();
 	// init device stack on configured roothub port
 	tud_init(BOARD_TUD_RHPORT);
+	platform_i2s_init();
 	TU_LOG1("Headset running\r\n");
 	BaseType_t ret_val = xTaskCreatePinnedToCore(usb_task, "usb_task", 8 * 1024, NULL, 9, NULL, 1);
+	ret_val = xTaskCreatePinnedToCore(send_audio_task, "send_audio_task", 8 * 1024, NULL, 6, NULL, 0);
 	return (pdPASS == ret_val) ? ESP_OK : ESP_FAIL;
 }
 
@@ -368,11 +385,8 @@ bool tud_audio_tx_done_pre_load_cb(uint8_t rhport, uint8_t itf, uint8_t ep_in, u
 	(void)itf;
 	(void)ep_in;
 	(void)cur_alt_setting;
-	AudioPacket packet;
-	if (xQueueReceive(g_audioQueue, &packet, portTICK_PERIOD_MS) == pdTRUE) {
-		//printf("packet.size = %ld\n", packet.size);
-		tud_audio_write(packet.data, packet.size);
-	}
+
+	tud_audio_write(mic_buf, g_audio_packet.size);
 	// This callback could be used to fill microphone data separately
 	return true;
 }
@@ -385,13 +399,15 @@ bool tud_audio_tx_done_post_load_cb(uint8_t rhport, uint16_t n_bytes_copied, uin
 	(void) ep_in;
 	(void) cur_alt_setting;
 	esp_err_t ret = ESP_OK;
+	i2s_read(I2S_NUM_0, &g_audio_packet.data, AUDIO_LENGTH, &g_audio_packet.size, portTICK_PERIOD_MS);
 
-	/*** Here to fill audio buffer, only use in audio transmission begin ***/
-	// size_t bytes_read = 0;
+	for (int i = 0, j = 0; j < g_audio_packet.size/2; i++, j += 2) {
+		mic_buf[i] = g_audio_packet.data[j];
+	}
 
-	// ret = i2s_channel_read(i2s_rx_chan, &mic_buf, AUDIO_LENGTH * 2, &bytes_read, 0);
-	// for (int i = 0; i < AUDIO_LENGTH / 2 ; i++) {
-	//     mic_buf[i + 1] = mic_buf[2 * (i + 1)];
+	// memcpy(&g_audio_packet.data, mic_buf, g_audio_packet.size);
+	// if (g_audioQueue) {
+	// 	xQueueSend(g_audioQueue, &g_audio_packet, portTICK_PERIOD_MS);
 	// }
 	return ret == ESP_OK ? true : false;
 }

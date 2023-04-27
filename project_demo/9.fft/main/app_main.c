@@ -21,7 +21,7 @@
 #include "driver/gpio.h"
 #include "nvs_flash.h"
 #include "app_main.h"
-#include "page_fft.h"
+#include "fft_user_interface.h"
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "usb_headset.h"
@@ -39,19 +39,15 @@ SemaphoreHandle_t xGuiSemaphore;
 static void gui_task(void *arg)
 {
 	xGuiSemaphore = xSemaphoreCreateMutex();
-	lv_init(); // lvgl内核初始化
-
-	lvgl_driver_init(); // lvgl显示接口初始化
-	/*外部PSRAM方式*/
-	// lv_color_t *buf1 = (lv_color_t *)heap_caps_malloc(DISP_BUF_SIZE * 2, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
-	// lv_color_t *buf2 = (lv_color_t *)heap_caps_malloc(DISP_BUF_SIZE * 2, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+	// lvgl内核初始化
+	lv_init();
+	// lvgl显示接口初始化
+	lvgl_driver_init();
 
 	/*内部DMA方式*/
 	lv_color_t *buf1 = heap_caps_malloc(DISP_BUF_SIZE * sizeof(lv_color_t), MALLOC_CAP_DMA);
 	lv_color_t *buf2 = heap_caps_malloc(DISP_BUF_SIZE * sizeof(lv_color_t), MALLOC_CAP_DMA);
 
-	// static lv_color_t buf1[DISP_BUF_SIZE];
-	// static lv_color_t buf2[DISP_BUF_SIZE];
 	static lv_disp_buf_t disp_buf;
 	uint32_t size_in_px = DISP_BUF_SIZE;
 	lv_disp_buf_init(&disp_buf, buf1, buf2, size_in_px);
@@ -62,13 +58,6 @@ static void gui_task(void *arg)
 	disp_drv.buffer = &disp_buf;
 	lv_disp_drv_register(&disp_drv);
 
-	// lv_indev_drv_t indev_drv;
-	// lv_indev_drv_init(&indev_drv);
-	// indev_drv.read_cb = touch_driver_read;
-	// indev_drv.type = LV_INDEV_TYPE_POINTER;
-	// lv_indev_drv_register(&indev_drv);
-
-	// esp_register_freertos_tick_hook(lv_tick_task);
 	/* Create and start a periodic timer interrupt to call lv_tick_inc */
 	const esp_timer_create_args_t periodic_timer_args = {
 		.callback = &lv_tick_task,
@@ -78,6 +67,7 @@ static void gui_task(void *arg)
 	ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 10 * 1000));
 
 	FFT_Setup();
+	usb_headset_init();
 	while (1)
 	{
 		/* Delay 1 tick (assumes FreeRTOS tick is 10ms */
@@ -104,5 +94,4 @@ void app_main(void)
 	}
 	ESP_ERROR_CHECK(ret);
 	xTaskCreatePinnedToCore(&gui_task, "gui_task", 1024 * 8, NULL, 6, NULL, 0);
-	usb_headset_init();
 }

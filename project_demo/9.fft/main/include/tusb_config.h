@@ -1,8 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2015-2022 Espressif Systems (Shanghai) CO LTD
- *
- * SPDX-License-Identifier: Apache-2.0
- */
+** Copyright (c) 2023 The tinyuac project. All rights reserved.
+** Created by crisqifawei 2023
+*/
+
 #ifndef _TUSB_CONFIG_H_
 #define _TUSB_CONFIG_H_
 
