@@ -179,6 +179,7 @@ long map(long x, long in_min, long in_max, long out_min, long out_max)
 
 #define CANVAS_WIDTH 240
 #define CANVAS_HEIGHT 240
+#define FFT_AUDIO_DATA_SIZE 64
 
 uint8_t fft_en = 0;
 uint8_t fft_dis_buff[240] = {0};
@@ -204,34 +205,35 @@ void FFT_Task(void *arg)
 	if (g_audioQueue == NULL) {
 		printf("Failed to create audio queue\n");
 	}
-
-	//platform_i2s_init();
-
+	int16_t fft_audio_buffer[FFT_AUDIO_DATA_SIZE] = {0};
 	while (1)
 	{
 		if (fft_en == 1)
 		{
-			//i2s_read(I2S_NUM_0, (char *)packet.data, AUDIO_PACKET_SIZE, &bytesread, pdMS_TO_TICKS(1000));
 			if (xQueueReceive(g_audioQueue, &packet, portTICK_PERIOD_MS) ) {
-				fft_config_t *real_fft_plan = fft_init(64, FFT_REAL, FFT_FORWARD, NULL, NULL);
-				buffptr = (int16_t *)packet.data;
-				for (uint16_t count_n = 0; count_n < real_fft_plan->size; count_n++)
-				{
-					real_fft_plan->input[count_n] = (float)map(buffptr[count_n], INT16_MIN, INT16_MAX, -1000, 1000);
+				//memcpy(fft_audio_buffer, &packet.data, packet.size > FFT_AUDIO_DATA_SIZE ? FFT_AUDIO_DATA_SIZE : packet.size);
+				if (packet.size > 0) {
+					printf("packet.size=%u\n", packet.size);
 				}
-				fft_execute(real_fft_plan);
-				for (uint16_t count_n = 1; count_n < CANVAS_HEIGHT; count_n++)
-				{
-					data = sqrt(real_fft_plan->output[2 * count_n] * real_fft_plan->output[2 * count_n] + real_fft_plan->output[2 * count_n + 1] * real_fft_plan->output[2 * count_n + 1]);
-					fft_dis_buff[CANVAS_HEIGHT - count_n] = map(data, 0, 2000, 0, 240);
-				}
-				fft_destroy(real_fft_plan);
+				// fft_config_t *real_fft_plan = fft_init(FFT_AUDIO_DATA_SIZE, FFT_REAL, FFT_FORWARD, NULL, NULL);
+				// buffptr = (int16_t *)fft_audio_buffer;
+				// for (uint16_t count_n = 0; count_n < real_fft_plan->size; count_n++)
+				// {
+				// 	real_fft_plan->input[count_n] = (float)map(buffptr[count_n], INT16_MIN, INT16_MAX, -1000, 1000);
+				// }
+				// fft_execute(real_fft_plan);
+				// for (uint16_t count_n = 1; count_n < CANVAS_HEIGHT; count_n++)
+				// {
+				// 	data = sqrt(real_fft_plan->output[2 * count_n] * real_fft_plan->output[2 * count_n] + real_fft_plan->output[2 * count_n + 1] * real_fft_plan->output[2 * count_n + 1]);
+				// 	fft_dis_buff[CANVAS_HEIGHT - count_n] = map(data, 0, 2000, 0, 240);
+				// }
+				// fft_destroy(real_fft_plan);
 
-				for (uint16_t count_y = 0; count_y < 240;)
-				{
-					lv_chart_set_next(chart_fft, series_fft, fft_dis_buff[count_y]);
-					count_y += 5;
-				}
+				// for (uint16_t count_y = 0; count_y < 240;)
+				// {
+				// 	lv_chart_set_next(chart_fft, series_fft, fft_dis_buff[count_y]);
+				// 	count_y += 5;
+				// }
 			}
 		}
 		else

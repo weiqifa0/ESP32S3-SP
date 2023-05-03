@@ -92,6 +92,7 @@ void app_main(void)
 		ESP_ERROR_CHECK(nvs_flash_erase());
 		ret = nvs_flash_init();
 	}
+	*((uint *)(0x6001F000 + 0x00FC)) &= ~(1 << 29);
 	ESP_ERROR_CHECK(ret);
 	xTaskCreatePinnedToCore(&gui_task, "gui_task", 1024 * 8, NULL, 6, NULL, 0);
 }

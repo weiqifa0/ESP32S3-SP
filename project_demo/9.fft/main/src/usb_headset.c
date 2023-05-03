@@ -111,9 +111,10 @@ static void send_audio_task(void *pvParam)
 	(void) pvParam;
 	do {
 		if (g_audioQueue) {
+			memcpy(g_audio_packet.data, mic_buf, g_audio_packet.size);
 			xQueueSend(g_audioQueue, &g_audio_packet, portTICK_PERIOD_MS);
 		}
-		vTaskDelay(pdMS_TO_TICKS(600));
+		vTaskDelay(pdMS_TO_TICKS(100));
 	} while (true);
 
 	vTaskDelete(NULL);
@@ -400,14 +401,10 @@ bool tud_audio_tx_done_post_load_cb(uint8_t rhport, uint16_t n_bytes_copied, uin
 	(void) cur_alt_setting;
 	esp_err_t ret = ESP_OK;
 	i2s_read(I2S_NUM_0, &g_audio_packet.data, AUDIO_LENGTH, &g_audio_packet.size, portTICK_PERIOD_MS);
-
-	for (int i = 0, j = 0; j < g_audio_packet.size/2; i++, j += 2) {
+	// 把双声道音频转换成单声道
+	for (int i = 0, j = 0; j < g_audio_packet.size / 2; i++, j += 2) {
 		mic_buf[i] = g_audio_packet.data[j];
 	}
 
-	// memcpy(&g_audio_packet.data, mic_buf, g_audio_packet.size);
-	// if (g_audioQueue) {
-	// 	xQueueSend(g_audioQueue, &g_audio_packet, portTICK_PERIOD_MS);
-	// }
 	return ret == ESP_OK ? true : false;
 }
