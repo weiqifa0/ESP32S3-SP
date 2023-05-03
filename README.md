@@ -77,3 +77,7 @@ Python being checked: /Users/crisqifawei/.espressif/python_env/idf4.4_py3.9_env/
 
 
 -  ~/esp/esp-idf/install.sh /Users/crisqifawei/esp/esp-idf/tools/requirements/requirements.core.txt
+
+# 使用idf.py flash monitor 真的贼爽
+<img width="1183" alt="image" src="https://user-images.githubusercontent.com/11375905/235952280-d0708b88-644e-4847-a1a3-b8efd6cc24bd.png">
+
