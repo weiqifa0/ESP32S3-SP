@@ -10,6 +10,12 @@ https://mp.weixin.qq.com/s/TbulWs86TWMFHB3vj_xS_A
 
 https://mp.weixin.qq.com/s/89i9LeKZv3B2qcryyxUWUQ
 
+## clone仓库部分更新
+git clone -b v5.0.1 --recursive https://github.com/espressif/esp-idf.git
+
+要换成
+git clone -b v5.0.1 --recursive git@github.com:espressif/esp-idf.git
+
 # 分支介绍
 * master分支的例程需要esp-idf 4.4的环境
 * 下载后直接运行idf.py build就可以，不需要在set-target 这样会导致会覆盖默认配置
